@@ -11,7 +11,7 @@ projectAuth.onAuthStateChanged(_user => {
 });
 
 const getUser = () => {
-  return { user } 
+  return { user }
 }
 
 export default getUser
