@@ -21,7 +21,7 @@ import useStorage from '@/composables/useStorage';
 import useCollection from '@/composables/useCollection';
 import getUser from '@/composables/getUser';
 import { timestamp } from '@/firebase/config';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 export default {
     setup() {

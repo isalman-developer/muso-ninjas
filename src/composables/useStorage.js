@@ -19,13 +19,22 @@ const useStorage = () => {
             // we are tying to get the url which is async task so its a promise we have to wait for its response
             url.value = await res.ref.getDownloadURL();
         } catch (err) {
-            console.log("File not uploaded.");
+            console.log("File cannot be uploaded.");
             error.value = err.message
         }
-
     }
 
-    return { error, filePath, url, uploadImage }
+    const deleteImage = async (path) => {
+        const storageRef = projectStorage.ref(path);
+        try {
+            await storageRef.delete();
+        } catch (err) {
+            error.value = err.message;
+            console.log("File cannot be deleted.")
+        }
+    }
+
+    return { error, filePath, url, uploadImage, deleteImage }
 
 }
 
