@@ -17,11 +17,25 @@ const useDocument = (playlist, id) => {
         } catch (err) {
             console.log("Error in UseDocument.js : ",err.message);
             isPending.value = false;
-            error.value = err.message;
+            error.value = "Cant delete the doc : " + err.message;
         }
     }
 
-    return { error, isPending, deleteDoc }
+    const updateDoc = async (updates) => {
+        isPending.value = true;
+        error.value = null;
+        try {
+            const res = await refDoc.update(updates);
+            isPending.value = false;
+            return res;
+        } catch (err) {
+            console.log("Error in UseDocument.js : ",err.message);
+            isPending.value = false;
+            error.value = "Cant update the doc : " + err.message;
+        }
+    }
+
+    return { error, isPending, deleteDoc, updateDoc }
 
 }
 

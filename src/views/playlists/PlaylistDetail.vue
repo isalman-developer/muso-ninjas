@@ -14,7 +14,15 @@
         </div>
 
         <div class="song-list">
-            <p>Song list here</p>
+            <div v-if="!playlist.songs.length">No songs have been added to this playlist yet.</div>
+            <div v-for="song in playlist.songs" :key="song.id" class="single-song">
+                <div class="details">
+                <h3>{{ song.title }}</h3>
+                <p>{{ song.artist }}</p>
+                </div>
+                <button v-if="ownership" @click="handleDeleteSong(song.id)">delete</button>
+            </div>
+            <AddSongVue v-if="ownership" :playlist="playlist" />
         </div>
     </div>
 </template>
@@ -25,14 +33,16 @@ import useDocument from '@/composables/useDocument';
 import useStorage from '@/composables/useStorage';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import AddSongVue from '@/components/AddSong.vue';
 
 export default {
     props: ['id'],
+    components:{AddSongVue},
+
     setup(props) {
-        
         const { error, document: playlist } = getDocument("playlists", props.id);
         const { user } = getUser();
-        const { deleteDoc } = useDocument('playlists', props.id);
+        const { updateDoc, deleteDoc } = useDocument('playlists', props.id);
         const { deleteImage } = useStorage();
         const router = useRouter();
         
@@ -50,7 +60,16 @@ export default {
             router.push({ name:'Home' });
         }
 
-        return { error, playlist, ownership, handleDelete }
+        const handleDeleteSong = async (songId) => {
+            const updateSongs = playlist.value.songs.filter((song)=>{
+                return song.id !== songId;
+            });
+
+            //in update what property to be updated in form of object
+            await updateDoc({songs:[...updateSongs]});
+        }
+
+        return { error, playlist, ownership, handleDelete, handleDeleteSong }
     }
 }
 </script>
@@ -100,4 +119,13 @@ export default {
 .description {
     text-align: left;
 }
+
+.single-song {
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--secondary);
+    margin-bottom: 20px;
+  }
 </style>
