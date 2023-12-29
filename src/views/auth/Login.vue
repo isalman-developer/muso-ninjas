@@ -12,17 +12,19 @@
 <script>
 import { ref } from 'vue';
 import useLogin from '../../composables/useLogin';
+import { useRouter } from 'vue-router';
 
 export default {
     setup() {
         const { login, error, isPending } = useLogin();
         const email = ref('');
         const password = ref('');
+        const router = useRouter();
 
         const handleSubmit = async () => {
             const response = await login(email.value, password.value);
             if (!error.value) {
-                console.log("User logged in");
+                router.push({name:'UserPlaylists'});
             }
         }
         return { email, password, error,isPending, handleSubmit }

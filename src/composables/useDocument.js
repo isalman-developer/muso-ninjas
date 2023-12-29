@@ -15,7 +15,7 @@ const useDocument = (playlist, id) => {
             isPending.value = false;
             return res;
         } catch (err) {
-            console.log("Error in UseDocument.js : ",err.message);
+            console.log("Error in UseDocument.js : ", err.message);
             isPending.value = false;
             error.value = "Cant delete the doc : " + err.message;
         }
@@ -29,7 +29,7 @@ const useDocument = (playlist, id) => {
             isPending.value = false;
             return res;
         } catch (err) {
-            console.log("Error in UseDocument.js : ",err.message);
+            console.log("Error in UseDocument.js : ", err.message);
             isPending.value = false;
             error.value = "Cant update the doc : " + err.message;
         }
